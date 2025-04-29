@@ -9,4 +9,5 @@ public interface BookingService {
 
     BookingResponse bookTravel(BookingRequest bookingRequest)throws NotFoundException;
     Hotel createHotel(Hotel hotel);
+    Hotel findHotelByCity(String city) throws NotFoundException;
 }
