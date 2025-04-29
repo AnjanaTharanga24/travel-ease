@@ -6,9 +6,7 @@ import com.example.demo.exception.NotFoundException;
 import com.example.demo.model.Hotel;
 import com.example.demo.service.BookingService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -24,5 +22,10 @@ public class BookingController {
     @PostMapping("/hotels")
     public Hotel createHotel(@RequestBody Hotel hotel){
         return bookingService.createHotel(hotel);
+    }
+
+    @GetMapping("/hotels/{city}")
+    public Hotel getHotelsByCity(@PathVariable("city") String city) throws NotFoundException{
+        return bookingService.findHotelByCity(city);
     }
 }

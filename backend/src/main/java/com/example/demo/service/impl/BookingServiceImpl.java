@@ -60,4 +60,15 @@ public class BookingServiceImpl implements BookingService {
 
         return hotelRepository.save(newHotel);
     }
+
+    @Override
+    public Hotel findHotelByCity(String city) throws NotFoundException {
+
+        Hotel foundHotels = hotelRepository.findByCity(city);
+
+        if (foundHotels == null){
+            throw new NotFoundException("there are not hotels for " +city);
+        }
+        return foundHotels;
+    }
 }
