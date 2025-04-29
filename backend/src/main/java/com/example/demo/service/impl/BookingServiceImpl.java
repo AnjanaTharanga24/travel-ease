@@ -4,8 +4,10 @@ import com.example.demo.dto.request.BookingRequest;
 import com.example.demo.dto.response.BookingResponse;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.model.Booking;
+import com.example.demo.model.Hotel;
 import com.example.demo.model.User;
 import com.example.demo.repository.BookingRepository;
+import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BookingService;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,7 @@ public class BookingServiceImpl implements BookingService {
 
     private BookingRepository bookingRepository;
     private UserRepository userRepository;
+    private HotelRepository hotelRepository;
 
     @Override
     public BookingResponse bookTravel(BookingRequest bookingRequest) throws NotFoundException {
@@ -46,5 +49,15 @@ public class BookingServiceImpl implements BookingService {
                 .numberOfTravelers(bookedTravel.getNumberOfTravelers())
                 .hotelSelection(bookedTravel.getHotelSelection())
                 .build();
+    }
+
+    @Override
+    public Hotel createHotel(Hotel hotel) {
+
+        Hotel newHotel = new Hotel();
+        newHotel.setCity(hotel.getCity());
+        newHotel.setHotelNames(hotel.getHotelNames());
+
+        return hotelRepository.save(newHotel);
     }
 }
