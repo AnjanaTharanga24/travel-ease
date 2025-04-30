@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class BudgetCalculationServiceImpl implements BudgetCalculationService {
@@ -19,26 +20,33 @@ public class BudgetCalculationServiceImpl implements BudgetCalculationService {
 
     @Override
     public BudgetResponse calculateBudget(BudgetRequest budgetRequest) throws NotFoundException {
+        List<TravelPackage> travelPackages = travelPackageRepository.findAllByHotelName(budgetRequest.getHotelName());
 
-        List<TravelPackage> travelPackage = travelPackageRepository.findAllByHotelName(budgetRequest.getHotelName());
-
-        if (travelPackage == null){
-            throw new NotFoundException("that hotel name not included in our system");
+        if (travelPackages.isEmpty()) {
+            throw new NotFoundException("That hotel name is not included in our system");
         }
 
-        Optional<TravelPackage> optionalTravelPackage = travelPackageRepository.findByHotelNameAndPackageName(budgetRequest.getHotelName(),budgetRequest.getPackageName());
+        Optional<TravelPackage> optionalTravelPackage = travelPackageRepository.findByHotelNameAndPackageName(
+                budgetRequest.getHotelName(),
+                budgetRequest.getPackageName());
 
-        if (!optionalTravelPackage.isPresent()){
-            throw new NotFoundException("packages not available with name : " + budgetRequest.getPackageName());
+        if (optionalTravelPackage.isEmpty()) {
+            throw new NotFoundException("Packages not available with name: " + budgetRequest.getPackageName());
+        }
+
+        if (budgetRequest.getNumberOfDays() <= 0) {
+            throw new NotFoundException("Days must be greater than 0");
+        }
+
+        if (budgetRequest.getNumberOfTravelers() <= 0) {
+            throw new NotFoundException("Travelers must be greater than 0");
         }
 
         TravelPackage foundTravelPackage = optionalTravelPackage.get();
-
         Integer numberOfDays = budgetRequest.getNumberOfDays();
         Integer numberOfTravelers = budgetRequest.getNumberOfTravelers();
         Double packagePrice = foundTravelPackage.getPrice();
-
-        Double Budget = (packagePrice * numberOfTravelers ) * numberOfDays;
+        Double totalBudget = (packagePrice * numberOfTravelers) * numberOfDays;
 
         return BudgetResponse.builder()
                 .city(budgetRequest.getCity())
@@ -46,7 +54,7 @@ public class BudgetCalculationServiceImpl implements BudgetCalculationService {
                 .packageName(foundTravelPackage.getPackageName())
                 .numberOfDays(numberOfDays)
                 .numberOfTravelers(numberOfTravelers)
-                .totalBudget(Budget)
+                .totalBudget(totalBudget)
                 .build();
     }
 }

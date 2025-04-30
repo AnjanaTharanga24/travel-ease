@@ -10,29 +10,27 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class TravelPackageServiceImpl implements TravelPackageService {
 
-    private TravelPackageRepository travelPackageRepository;
-    private HotelRepository hotelRepository;
+    private final TravelPackageRepository travelPackageRepository;
+    private final HotelRepository hotelRepository;
 
     @Override
     public TravelPackage createTravelPackage(TravelPackage travelPackage) throws NotFoundException {
-
         String city = travelPackage.getDestination();
         String hotelName = travelPackage.getHotelName();
 
         Hotel optionalHotel = hotelRepository.findByCity(city);
         Hotel foundHotel = hotelRepository.findByHotelNames(hotelName);
 
-        if (optionalHotel == null){
-            throw new NotFoundException(city + " is not tourism city ");
+        if (optionalHotel == null) {
+            throw new NotFoundException(city + " is not tourism city");
         }
 
-        if (foundHotel == null){
+        if (foundHotel == null) {
             throw new NotFoundException(hotelName + " is not matching with our data");
         }
 
@@ -48,11 +46,10 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 
     @Override
     public List<TravelPackage> getPackagesByCity(String city) throws NotFoundException {
-
         List<TravelPackage> foundPackages = travelPackageRepository.findAllByDestination(city);
 
-        if (foundPackages == null){
-            throw new NotFoundException("there are not packages in " + city);
+        if (foundPackages == null || foundPackages.isEmpty()) {
+            throw new NotFoundException("there are no packages in " + city);
         }
         return foundPackages;
     }
@@ -61,8 +58,8 @@ public class TravelPackageServiceImpl implements TravelPackageService {
     public List<TravelPackage> getPackageByHotelName(String name) throws NotFoundException {
         List<TravelPackage> foundPackages = travelPackageRepository.findAllByHotelName(name);
 
-        if (foundPackages == null){
-            throw new NotFoundException("there are not packages in " + name);
+        if (foundPackages == null || foundPackages.isEmpty()) {
+            throw new NotFoundException("there are no packages for " + name);
         }
         return foundPackages;
     }
