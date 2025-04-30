@@ -12,4 +12,14 @@ public class AppControllerAdvicer {
     public ResponseEntity<String> handleNotFoundException(NotFoundException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(DuplicateEntryException.class)
+    public ResponseEntity<String> handleDuplicateEntryException(DuplicateEntryException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<String> handleCustomException(CustomException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
 }
