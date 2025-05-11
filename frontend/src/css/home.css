@@ -1,0 +1,76 @@
+/* Hero Carousel Styles */
+.hero-slide {
+    height: 80vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+  }
+  
+  .slide-1 {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                      url('https://source.unsplash.com/random/1600x900?travel');
+  }
+  
+  .slide-2 {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                      url('https://source.unsplash.com/random/1600x900?hotel');
+  }
+  
+  .slide-3 {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                      url('https://source.unsplash.com/random/1600x900?budget');
+  }
+  
+  /* Search Box Styles */
+  .search-box {
+    background-color: white;
+    margin-top: -50px;
+    position: relative;
+    z-index: 10;
+  }
+  
+  /* Card Hover Effect */
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Social Icons */
+  .social-icons a {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  .social-icons a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .hero-slide {
+      height: 60vh;
+    }
+    
+    .carousel-caption {
+      padding-bottom: 1rem;
+    }
+    
+    .carousel-caption h1 {
+      font-size: 2rem;
+    }
+    
+    .carousel-caption p {
+      font-size: 1rem;
+    }
+  }
