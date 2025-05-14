@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Booking from './pages/Booking';
 import Budget from './pages/Budget';
 import Packages from './pages/Packages';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
           <Route path="/booking" element={<Booking/>} />
           <Route path="/budget" element={<Budget/>} />
           <Route path="/packages" element={<Packages/>} />
+          <Route path="/register" element={<Register/>} />
+          <Route path="/login" element={<Register/>} />
         </Routes>
       </Router>
     </div>
