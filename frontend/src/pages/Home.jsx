@@ -1,49 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../css/home.css';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const Home = () => {
   return (
     <>
-      {/* Navigation Bar */}
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark py-3 sticky-top">
-        <div className="container">
-          <Link className="navbar-brand d-flex align-items-center" to="/">
-            <i className="fas fa-plane-departure me-2"></i>
-            <span className="fw-bold">TravelEase</span>
-          </Link>
-          <button 
-            className="navbar-toggler" 
-            type="button" 
-            data-bs-toggle="collapse" 
-            data-bs-target="#navbarNav"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav me-auto">
-              <li className="nav-item">
-                <Link className="nav-link active" to="/">Home</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/packages">Packages</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/hotels">Hotels</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/budget">Budget Calculator</Link>
-              </li>
-            </ul>
-            <div className="d-flex">
-              <Link to="/login" className="btn btn-outline-light me-2">Login</Link>
-              <Link to="/register" className="btn btn-primary">Register</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Carousel */}
+    <Navbar/>
       <div id="heroCarousel" className="carousel slide carousel-fade mb-5" data-bs-ride="carousel">
         <div className="carousel-indicators">
           <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" className="active"></button>
@@ -233,53 +197,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-dark text-white py-5">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-4 mb-4 mb-md-0">
-              <h5 className="mb-3">TravelEase</h5>
-              <p>Making travel planning easy and enjoyable since 2023.</p>
-              <div className="social-icons">
-                <a href="#" className="text-white me-3"><i className="fab fa-facebook-f"></i></a>
-                <a href="#" className="text-white me-3"><i className="fab fa-twitter"></i></a>
-                <a href="#" className="text-white me-3"><i className="fab fa-instagram"></i></a>
-                <a href="#" className="text-white"><i className="fab fa-linkedin-in"></i></a>
-              </div>
-            </div>
-            <div className="col-md-2 mb-4 mb-md-0">
-              <h5 className="mb-3">Quick Links</h5>
-              <ul className="list-unstyled">
-                <li className="mb-2"><a href="#" className="text-white">Home</a></li>
-                <li className="mb-2"><a href="#" className="text-white">Packages</a></li>
-                <li className="mb-2"><a href="#" className="text-white">Hotels</a></li>
-                <li className="mb-2"><a href="#" className="text-white">About Us</a></li>
-              </ul>
-            </div>
-            <div className="col-md-3 mb-4 mb-md-0">
-              <h5 className="mb-3">Support</h5>
-              <ul className="list-unstyled">
-                <li className="mb-2"><a href="#" className="text-white">FAQs</a></li>
-                <li className="mb-2"><a href="#" className="text-white">Contact Us</a></li>
-                <li className="mb-2"><a href="#" className="text-white">Privacy Policy</a></li>
-                <li className="mb-2"><a href="#" className="text-white">Terms of Service</a></li>
-              </ul>
-            </div>
-            <div className="col-md-3">
-              <h5 className="mb-3">Contact Info</h5>
-              <ul className="list-unstyled">
-                <li className="mb-2"><i className="fas fa-map-marker-alt me-2"></i> 123 Travel St, Adventure City</li>
-                <li className="mb-2"><i className="fas fa-phone me-2"></i> +1 (555) 123-4567</li>
-                <li className="mb-2"><i className="fas fa-envelope me-2"></i> info@travelease.com</li>
-              </ul>
-            </div>
-          </div>
-          <hr className="my-4" />
-          <div className="text-center">
-            <p className="mb-0">&copy; {new Date().getFullYear()} TravelEase. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+     <Footer/>
     </>
   );
 };
