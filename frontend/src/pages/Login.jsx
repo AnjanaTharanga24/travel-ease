@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../common/UserContext";
 
 export default function Login() {
 
@@ -8,6 +9,8 @@ export default function Login() {
       username: '',
       password: ''
     })
+
+    const  {setUser} = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -24,6 +27,7 @@ export default function Login() {
         try {
             const response = await axios.post('http://localhost:8080/login', formData);
             console.log(response.data);
+            setUser(response.data);
             alert('Login successful');
             navigate('/')
         } catch (error) {
