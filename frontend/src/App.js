@@ -5,6 +5,7 @@ import Booking from './pages/Booking';
 import Budget from './pages/Budget';
 import Packages from './pages/Packages';
 import Register from './pages/Register';
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
           <Route path="/budget" element={<Budget/>} />
           <Route path="/packages" element={<Packages/>} />
           <Route path="/register" element={<Register/>} />
-          <Route path="/login" element={<Register/>} />
+          <Route path="/login" element={<Login/>} />
         </Routes>
       </Router>
     </div>
