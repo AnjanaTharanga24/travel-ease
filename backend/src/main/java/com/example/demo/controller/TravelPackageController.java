@@ -29,4 +29,9 @@ public class TravelPackageController {
     public List<TravelPackage> getTravelPackageByHotelName(@PathVariable("name") String name)throws NotFoundException{
         return travelPackageService.getPackageByHotelName(name);
     }
+
+    @GetMapping("/packages/{city}/{hotel-name}")
+    public List<TravelPackage> getTravelPackagesByCityAndHotel(@PathVariable("city") String city, @PathVariable("hotel-name") String hotelName) throws  NotFoundException{
+        return travelPackageService.getPackageByCityAndHotel(city,hotelName);
+    }
 }

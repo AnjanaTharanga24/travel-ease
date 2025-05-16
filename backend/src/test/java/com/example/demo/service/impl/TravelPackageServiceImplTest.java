@@ -38,7 +38,7 @@ class TravelPackageServiceImplTest {
         package1.setId("1");
         package1.setDestination("Paris");
 
-        when(travelPackageRepository.findAllByDestination("Paris"))
+        when(travelPackageRepository.findAllByDestinationIgnoreCase("Paris"))
                 .thenReturn(Collections.singletonList(package1));
 
         List<TravelPackage> result = travelPackageService.getPackagesByCity("Paris");
@@ -49,26 +49,26 @@ class TravelPackageServiceImplTest {
 
     @Test
     void getPackagesByCity_WhenNoPackages_ShouldThrowException() {
-        when(travelPackageRepository.findAllByDestination("EmptyCity"))
+        when(travelPackageRepository.findAllByDestinationIgnoreCase("EmptyCity"))
                 .thenReturn(Collections.emptyList());
 
         NotFoundException exception = assertThrows(NotFoundException.class,
                 () -> travelPackageService.getPackagesByCity("EmptyCity"));
 
         assertEquals("there are no packages in EmptyCity", exception.getMessage());
-        verify(travelPackageRepository, times(1)).findAllByDestination("EmptyCity");
+        verify(travelPackageRepository, times(1)).findAllByDestinationIgnoreCase("EmptyCity");
     }
 
     @Test
     void getPackagesByCity_WithNullResult_ShouldThrowException() {
-        when(travelPackageRepository.findAllByDestination("NullCity"))
+        when(travelPackageRepository.findAllByDestinationIgnoreCase("NullCity"))
                 .thenReturn(null);
 
         NotFoundException exception = assertThrows(NotFoundException.class,
                 () -> travelPackageService.getPackagesByCity("NullCity"));
 
         assertEquals("there are no packages in NullCity", exception.getMessage());
-        verify(travelPackageRepository, times(1)).findAllByDestination("NullCity");
+        verify(travelPackageRepository, times(1)).findAllByDestinationIgnoreCase("NullCity");
     }
 
     @Test
@@ -78,7 +78,7 @@ class TravelPackageServiceImplTest {
         package1.setHotelName("Grand Hotel");
         package1.setPackageName("Luxury Package");
 
-        when(travelPackageRepository.findAllByHotelName("Grand Hotel"))
+        when(travelPackageRepository.findAllByHotelNameIgnoreCase("Grand Hotel"))
                 .thenReturn(Collections.singletonList(package1));
 
         List<TravelPackage> result = travelPackageService.getPackageByHotelName("Grand Hotel");
@@ -89,25 +89,25 @@ class TravelPackageServiceImplTest {
 
     @Test
     void getPackageByHotelName_WithEmptyResult_ShouldThrowException() {
-        when(travelPackageRepository.findAllByHotelName("Unknown Hotel"))
+        when(travelPackageRepository.findAllByHotelNameIgnoreCase("Unknown Hotel"))
                 .thenReturn(Collections.emptyList());
 
         NotFoundException exception = assertThrows(NotFoundException.class,
                 () -> travelPackageService.getPackageByHotelName("Unknown Hotel"));
 
         assertEquals("there are no packages for Unknown Hotel", exception.getMessage());
-        verify(travelPackageRepository, times(1)).findAllByHotelName("Unknown Hotel");
+        verify(travelPackageRepository, times(1)).findAllByHotelNameIgnoreCase("Unknown Hotel");
     }
 
     @Test
     void getPackageByHotelName_WithNullResult_ShouldThrowException() {
-        when(travelPackageRepository.findAllByHotelName("Null Hotel"))
+        when(travelPackageRepository.findAllByHotelNameIgnoreCase("Null Hotel"))
                 .thenReturn(null);
 
         NotFoundException exception = assertThrows(NotFoundException.class,
                 () -> travelPackageService.getPackageByHotelName("Null Hotel"));
 
         assertEquals("there are no packages for Null Hotel", exception.getMessage());
-        verify(travelPackageRepository, times(1)).findAllByHotelName("Null Hotel");
+        verify(travelPackageRepository, times(1)).findAllByHotelNameIgnoreCase("Null Hotel");
     }
 }

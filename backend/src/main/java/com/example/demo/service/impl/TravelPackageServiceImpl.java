@@ -63,4 +63,14 @@ public class TravelPackageServiceImpl implements TravelPackageService {
         }
         return foundPackages;
     }
+
+    @Override
+    public List<TravelPackage> getPackageByCityAndHotel(String city, String hotelName) throws NotFoundException {
+        List<TravelPackage> travelPackages = travelPackageRepository.findAllByDestinationAndHotelName(city,hotelName);
+
+        if (travelPackages.isEmpty()){
+            throw new NotFoundException("packages not found");
+        }
+        return travelPackages;
+    }
 }
