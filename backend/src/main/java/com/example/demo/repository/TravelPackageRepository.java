@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TravelPackageRepository extends MongoRepository<TravelPackage,String> {
-    List<TravelPackage> findAllByDestination(String destination);
-    List<TravelPackage> findAllByHotelName(String name);
+    List<TravelPackage> findAllByDestinationIgnoreCase(String destination);
+    List<TravelPackage> findAllByHotelNameIgnoreCase(String name);
     Optional<TravelPackage> findByHotelNameAndPackageName(String hotelName , String packName);
 }
