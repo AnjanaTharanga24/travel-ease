@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import axios from 'axios';
+import { UserContext } from '../common/UserContext';
 
 export default function Booking() {
   const [formData, setFormData] = useState({
-    userId: '',
     destination: '',
     date: '',
     numberOfTravelers: 1,
@@ -15,13 +16,48 @@ export default function Booking() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
+  const {user} = useContext(UserContext);
 
-  // Load available cities when component mounts
   useEffect(() => {
-    // This would fetch cities from your backend in a real implementation
-    // For demo purposes, using placeholder data
-    setCities(['New York', 'Paris', 'Tokyo', 'London', 'Rome', 'Dubai']);
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/cities');
+        setCities(response.data);
+      } catch (error) {
+        console.error('Error fetching cities:', error);
+        setCities(['Colombo', 'Kandy', 'Galle', 'Nuwara Eliya']); 
+      }
+    };
+    fetchCities();
   }, []);
+
+  useEffect(() => {
+    const fetchHotelsForCity = async () => {
+      if (!formData.destination) return;
+      
+      setLoading(true);
+      setMessage({ text: '', type: '' });
+      
+      try {
+        const response = await axios.get(`http://localhost:8080/hotels/${formData.destination}`);
+        setHotels(response.data.hotelNames || []);
+        if (response.data.hotelNames.length === 0) {
+          setMessage({ text: `No hotels found for ${formData.destination}`, type: 'info' });
+        }
+      } catch (error) {
+        console.error('Error fetching hotels:', error);
+        setHotels([]);
+        setMessage({ 
+          text: error.response?.data?.message || `Error fetching hotels for ${formData.destination}`,
+          type: 'danger' 
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHotelsForCity();
+  }, [formData.destination]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,66 +65,44 @@ export default function Booking() {
       ...formData,
       [name]: name === 'numberOfTravelers' ? parseInt(value) : value
     });
-
-    // If destination changes, fetch hotels for that city
-    if (name === 'destination') {
-      fetchHotelsForCity(value);
-    }
   };
 
-  const fetchHotelsForCity = (city) => {
-    if (!city) return;
-    
-    setLoading(true);
-    fetch(`/hotels/${city}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('City not found');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setHotels(data.hotelNames || []);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching hotels:', error);
-        setHotels([]);
-        setLoading(false);
-        setMessage({ text: `No hotels found for ${city}`, type: 'danger' });
-      });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage({ text: '', type: '' });
 
-    fetch('/book', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then(response => {
-        if (!response.ok) {
-          return response.json().then(err => {
-            throw new Error(err.message || 'Booking failed');
-          });
-        }
-        return response.json();
-      })
-      .then(data => {
-        setLoading(false);
-        setMessage({ text: 'Booking successful!', type: 'success' });
-        // Reset form or redirect
-      })
-      .catch(error => {
-        setLoading(false);
-        setMessage({ text: error.message, type: 'danger' });
+    try {
+
+      const requestBody = {
+        ...formData,
+        userId: user.id
+      };
+
+      const response = await axios.post('http://localhost:8080/book', requestBody);
+      console.log(response.data);
+
+      setMessage({ text: 'Booking successful!', type: 'success' });
+  
+      setFormData({
+        userId: '',
+        destination: '',
+        date: '',
+        numberOfTravelers: 1,
+        hotelSelection: ''
       });
+    } catch (error) {
+      console.error('Booking error:', error);
+      setMessage({ 
+        text: error.response?.data?.message || 'Booking failed. Please try again.',
+        type: 'danger' 
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <div>
@@ -109,18 +123,7 @@ export default function Booking() {
                 )}
 
                 <form onSubmit={handleSubmit}>
-                  <div className="mb-3">
-                    <label htmlFor="userId" className="form-label">User ID</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="userId"
-                      name="userId"
-                      value={formData.userId}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
+                
 
                   <div className="mb-3">
                     <label htmlFor="destination" className="form-label">Destination</label>
@@ -150,6 +153,7 @@ export default function Booking() {
                       name="date"
                       value={formData.date}
                       onChange={handleInputChange}
+                      min={today}
                       required
                     />
                   </div>
@@ -162,6 +166,7 @@ export default function Booking() {
                       id="numberOfTravelers"
                       name="numberOfTravelers"
                       min="1"
+                      max="20"
                       value={formData.numberOfTravelers}
                       onChange={handleInputChange}
                       required
@@ -177,7 +182,7 @@ export default function Booking() {
                       value={formData.hotelSelection}
                       onChange={handleInputChange}
                       required
-                      disabled={!formData.destination || hotels.length === 0}
+                      disabled={!formData.destination || loading}
                     >
                       <option value="">Select a hotel</option>
                       {hotels.map((hotel) => (
@@ -191,6 +196,11 @@ export default function Booking() {
                         <small>Loading hotels...</small>
                       </div>
                     )}
+                    {!loading && formData.destination && hotels.length === 0 && (
+                      <div className="text-warning mt-2">
+                        <small>No hotels available for this destination</small>
+                      </div>
+                    )}
                   </div>
 
                   <div className="d-grid gap-2">
@@ -199,7 +209,14 @@ export default function Booking() {
                       className="btn btn-primary"
                       disabled={loading}
                     >
-                      {loading ? 'Processing...' : 'Book Now'}
+                      {loading ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                          Processing...
+                        </>
+                      ) : (
+                        'Book Now'
+                      )}
                     </button>
                   </div>
                 </form>
