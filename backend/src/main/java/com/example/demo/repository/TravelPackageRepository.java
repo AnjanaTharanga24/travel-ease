@@ -10,4 +10,5 @@ public interface TravelPackageRepository extends MongoRepository<TravelPackage,S
     List<TravelPackage> findAllByDestinationIgnoreCase(String destination);
     List<TravelPackage> findAllByHotelNameIgnoreCase(String name);
     Optional<TravelPackage> findByHotelNameAndPackageName(String hotelName , String packName);
+    List<TravelPackage> findAllByDestinationAndHotelName(String city , String hotelName);
 }

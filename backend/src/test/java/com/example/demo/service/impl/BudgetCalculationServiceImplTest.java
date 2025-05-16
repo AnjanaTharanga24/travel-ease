@@ -37,7 +37,7 @@ class BudgetCalculationServiceImplTest {
         travelPackage.setPackageName("Paris Deluxe");
         travelPackage.setPrice(500.0);
 
-        when(travelPackageRepository.findAllByHotelName("Grand Hotel"))
+        when(travelPackageRepository.findAllByHotelNameIgnoreCase("Grand Hotel"))
                 .thenReturn(Collections.singletonList(travelPackage));
         when(travelPackageRepository.findByHotelNameAndPackageName("Grand Hotel", "Paris Deluxe"))
                 .thenReturn(Optional.of(travelPackage));
@@ -55,7 +55,7 @@ class BudgetCalculationServiceImplTest {
         BudgetRequest request = new BudgetRequest(
                 "1", "Paris", "Unknown Hotel", "Paris Deluxe", 5, 2);
 
-        when(travelPackageRepository.findAllByHotelName("Unknown Hotel"))
+        when(travelPackageRepository.findAllByHotelNameIgnoreCase("Unknown Hotel"))
                 .thenReturn(Collections.emptyList());
 
         assertThrows(NotFoundException.class, () -> {
@@ -71,7 +71,7 @@ class BudgetCalculationServiceImplTest {
         TravelPackage travelPackage = new TravelPackage();
         travelPackage.setHotelName("Grand Hotel");
 
-        when(travelPackageRepository.findAllByHotelName("Grand Hotel"))
+        when(travelPackageRepository.findAllByHotelNameIgnoreCase("Grand Hotel"))
                 .thenReturn(Collections.singletonList(travelPackage));
         when(travelPackageRepository.findByHotelNameAndPackageName("Grand Hotel", "Unknown Package"))
                 .thenReturn(Optional.empty());
@@ -91,7 +91,7 @@ class BudgetCalculationServiceImplTest {
         travelPackage.setPackageName("Paris Deluxe");
         travelPackage.setPrice(500.0);
 
-        when(travelPackageRepository.findAllByHotelName("Grand Hotel"))
+        when(travelPackageRepository.findAllByHotelNameIgnoreCase("Grand Hotel"))
                 .thenReturn(Collections.singletonList(travelPackage));
         when(travelPackageRepository.findByHotelNameAndPackageName("Grand Hotel", "Paris Deluxe"))
                 .thenReturn(Optional.of(travelPackage));
@@ -111,7 +111,7 @@ class BudgetCalculationServiceImplTest {
         travelPackage.setPackageName("Paris Deluxe");
         travelPackage.setPrice(500.0);
 
-        when(travelPackageRepository.findAllByHotelName("Grand Hotel"))
+        when(travelPackageRepository.findAllByHotelNameIgnoreCase("Grand Hotel"))
                 .thenReturn(Collections.singletonList(travelPackage));
         when(travelPackageRepository.findByHotelNameAndPackageName("Grand Hotel", "Paris Deluxe"))
                 .thenReturn(Optional.of(travelPackage));

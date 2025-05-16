@@ -10,4 +10,5 @@ public interface TravelPackageService {
     TravelPackage createTravelPackage(TravelPackage travelPackage) throws NotFoundException;
     List<TravelPackage> getPackagesByCity(String city) throws NotFoundException;
     List<TravelPackage> getPackageByHotelName(String name) throws NotFoundException;
+    List<TravelPackage> getPackageByCityAndHotel(String city, String hotelName) throws NotFoundException;
 }
