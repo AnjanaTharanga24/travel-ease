@@ -20,7 +20,7 @@ public class BudgetCalculationServiceImpl implements BudgetCalculationService {
 
     @Override
     public BudgetResponse calculateBudget(BudgetRequest budgetRequest) throws NotFoundException {
-        List<TravelPackage> travelPackages = travelPackageRepository.findAllByHotelName(budgetRequest.getHotelName());
+        List<TravelPackage> travelPackages = travelPackageRepository.findAllByHotelNameIgnoreCase(budgetRequest.getHotelName());
 
         if (travelPackages.isEmpty()) {
             throw new NotFoundException("That hotel name is not included in our system");
