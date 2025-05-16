@@ -11,6 +11,11 @@ export default function Navbar() {
     window.location.reload();
   };
 
+  // Helper to get avatar letter safely
+  const getAvatarLetter = () => {
+    return user?.name?.charAt(0)?.toUpperCase() || 'U';
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark py-3 sticky-top">
@@ -19,7 +24,7 @@ export default function Navbar() {
             <i className="fas fa-plane-departure me-2"></i>
             <span className="fw-bold">TravelEase</span>
           </Link>
-          
+
           <button
             className="navbar-toggler"
             type="button"
@@ -31,7 +36,7 @@ export default function Navbar() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          
+
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
@@ -66,11 +71,11 @@ export default function Navbar() {
                   aria-expanded="false"
                 >
                   <div className="avatar me-2">
-                    {user.name.charAt(0).toUpperCase()}
+                    {getAvatarLetter()}
                   </div>
-                  <span>{user.name}</span>
+                  <span>{user.name || "User"}</span>
                 </button>
-                
+
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                   <li>
                     <Link className="dropdown-item" to="/profile">

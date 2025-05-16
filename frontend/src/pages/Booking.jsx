@@ -16,6 +16,7 @@ export default function Booking() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
 
+
   // Load available cities when component mounts
   useEffect(() => {
     // This would fetch cities from your backend in a real implementation
@@ -82,7 +83,6 @@ export default function Booking() {
       .then(data => {
         setLoading(false);
         setMessage({ text: 'Booking successful!', type: 'success' });
-        // Reset form or redirect
       })
       .catch(error => {
         setLoading(false);
